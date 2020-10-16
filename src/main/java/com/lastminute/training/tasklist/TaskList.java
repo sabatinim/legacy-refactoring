@@ -130,7 +130,7 @@ public final class TaskList implements Runnable
 
   private void printf(String format, String value)
   {
-    out.printf(format, value);
+    new Display().printf(format,value);
   }
 
   private void check(String idString)
@@ -181,5 +181,13 @@ public final class TaskList implements Runnable
   private long nextId()
   {
     return ++lastId;
+  }
+
+  public class Display
+  {
+    public void printf(String format, String value)
+    {
+      out.printf(format, value);
+    }
   }
 }
