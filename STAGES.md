@@ -1,0 +1,11 @@
+- ##stage 0 (Work on abstraction levels)
+    - Remove std output 
+    - Remove std input and typing command
+    - isolate feature test and input output test
+    - implement deadline
+- ##stage 1
+    -  extract storage interface
+    - create a data model to persist
+    - contract test
+- ##stage 2
+    - ...
