@@ -121,11 +121,16 @@ public final class TaskList implements Runnable
     List<Task> projectTasks = tasks.get(project);
     if (projectTasks == null)
     {
-      out.printf("Could not find a project with the name \"%s\".", project);
+      printf("Could not find a project with the name \"%s\".", project);
       out.println();
       return;
     }
     projectTasks.add(new Task(nextId(), description, false));
+  }
+
+  private void printf(String format, String value)
+  {
+    out.printf(format, value);
   }
 
   private void check(String idString)
@@ -169,7 +174,7 @@ public final class TaskList implements Runnable
 
   private void error(String command)
   {
-    out.printf("I don't know what the command \"%s\" is.", command);
+    printf("I don't know what the command \"%s\" is.", command);
     out.println();
   }
 
