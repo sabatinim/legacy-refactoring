@@ -16,29 +16,29 @@ public final class TaskList implements Runnable
   private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
 
   private final BufferedReader in;
-  private final PrintWriter out;
 
   private long lastId = 0; //
+  private final Display display;
 
   public static void main(String[] args)
   {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out);
-    new TaskList(in, out).run();
+    new TaskList(in, new Display(out)).run();
   }
 
-  public TaskList(BufferedReader reader, PrintWriter writer)
+  public TaskList(BufferedReader reader, Display display)
   {
     this.in = reader;
-    this.out = writer;
+    this.display = display;
   }
 
   public void run()
   {
     while (true)
     {
-      out.print("> ");
-      out.flush();
+      display.print("> ");
+      display.flush();
       String command;
       try
       {
@@ -87,12 +87,13 @@ public final class TaskList implements Runnable
   {
     for (Map.Entry<String, List<Task>> project : tasks.entrySet())
     {
-      out.println(project.getKey());
+      display.println(project.getKey());
       for (Task task : project.getValue())
       {
-        out.printf("    [%c] %d: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
+        char checked = (task.isDone() ? 'x' : ' ');
+        display.printf("    [%c] %d: %s%n", checked, task.getId(), task.getDescription());
       }
-      out.println();
+      display.println();
     }
   }
 
@@ -113,7 +114,7 @@ public final class TaskList implements Runnable
 
   private void addProject(String name)
   {
-    tasks.put(name, new ArrayList<Task>());
+    tasks.put(name, new ArrayList<>());
   }
 
   private void addTask(String project, String description)
@@ -121,16 +122,11 @@ public final class TaskList implements Runnable
     List<Task> projectTasks = tasks.get(project);
     if (projectTasks == null)
     {
-      printf("Could not find a project with the name \"%s\".", project);
-      out.println();
+      display.printf("Could not find a project with the name \"%s\".", project);
+      display.println();
       return;
     }
     projectTasks.add(new Task(nextId(), description, false));
-  }
-
-  private void printf(String format, String value)
-  {
-    new Display().printf(format,value);
   }
 
   private void check(String idString)
@@ -157,25 +153,25 @@ public final class TaskList implements Runnable
         }
       }
     }
-    out.printf("Could not find a task with an ID of %d.", id);
-    out.println();
+    display.printf("Could not find a task with an ID of %d.", id);
+    display.println();
   }
 
   private void help()
   {
-    out.println("Commands:");
-    out.println("  show");
-    out.println("  add project <project name>");
-    out.println("  add task <project name> <task description>");
-    out.println("  check <task ID>");
-    out.println("  uncheck <task ID>");
-    out.println();
+    display.println("Commands:");
+    display.println("  show");
+    display.println("  add project <project name>");
+    display.println("  add task <project name> <task description>");
+    display.println("  check <task ID>");
+    display.println("  uncheck <task ID>");
+    display.println();
   }
 
   private void error(String command)
   {
-    printf("I don't know what the command \"%s\" is.", command);
-    out.println();
+    display.printf("I don't know what the command \"%s\" is.", command);
+    display.println();
   }
 
   private long nextId()
@@ -183,11 +179,4 @@ public final class TaskList implements Runnable
     return ++lastId;
   }
 
-  public class Display
-  {
-    public void printf(String format, String value)
-    {
-      out.printf(format, value);
-    }
-  }
 }
