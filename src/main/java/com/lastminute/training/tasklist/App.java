@@ -1,7 +1,7 @@
 package com.lastminute.training.tasklist;
 
-import com.lastminute.training.tasklist.infrastructure.CommandInput;
-import com.lastminute.training.tasklist.infrastructure.Display;
+import com.lastminute.training.tasklist.infrastructure.StdInCommandInput;
+import com.lastminute.training.tasklist.infrastructure.StdOutDisplay;
 import com.lastminute.training.tasklist.infrastructure.TaskList;
 
 import java.io.BufferedReader;
@@ -14,6 +14,6 @@ public class App
   {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out);
-    new TaskList(new CommandInput(in), new Display(out)).run();
+    new TaskList(new StdInCommandInput(in), new StdOutDisplay(out)).run();
   }
 }

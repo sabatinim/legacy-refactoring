@@ -4,8 +4,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.lastminute.training.tasklist.infrastructure.CommandInput;
-import com.lastminute.training.tasklist.infrastructure.Display;
+import com.lastminute.training.tasklist.infrastructure.StdInCommandInput;
+import com.lastminute.training.tasklist.infrastructure.StdOutDisplay;
 import com.lastminute.training.tasklist.infrastructure.TaskList;
 
 import java.io.*;
@@ -28,7 +28,7 @@ public final class ApplicationTest
     public ApplicationTest() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(new PipedInputStream(inStream)));
         PrintWriter out = new PrintWriter(new PipedOutputStream(outStream), true);
-        TaskList taskList = new TaskList(new CommandInput(in), new Display(out));
+        TaskList taskList = new TaskList(new StdInCommandInput(in), new StdOutDisplay(out));
         applicationThread = new Thread(taskList);
     }
 
