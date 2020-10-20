@@ -14,7 +14,7 @@ public class TasklistCommandExecutor
   private final Display display;
   private final Map<String, List<Task>> tasks;
 
-  private long lastId = 0; //
+  private Id idGenerator = new Id(); //
 
   public TasklistCommandExecutor(
     CommandInput commandInput,
@@ -68,16 +68,6 @@ public class TasklistCommandExecutor
     tasks.put(name, new ArrayList<>());
   }
 
-  private void addTask(String project, String description)
-  {
-    new InMemoryStorage(tasks)
-      .getProject(project)
-      .ifPresentOrElse(
-        tasks -> tasks.addTask(new Task(nextId(), description, false)),
-        () -> display.printf("Could not find a project with the name \"%s\".\n", project)
-      );
-  }
-
   private void setDone(String idString, boolean done)
   {
     int id = Integer.parseInt(idString);
@@ -94,11 +84,6 @@ public class TasklistCommandExecutor
     }
     display.printf("Could not find a task with an ID of %d.", id);
     display.println();
-  }
-
-  private long nextId()
-  {
-    return ++lastId;
   }
 
   private void show()
@@ -127,7 +112,13 @@ public class TasklistCommandExecutor
     else if (subcommand.equals("task"))
     {
       String[] projectTask = subcommandRest[1].split(" ", 2);
-      addTask(projectTask[0], projectTask[1]);
+      new AddTaskCommand(
+        projectTask[0],
+        projectTask[1],
+        new InMemoryStorage(tasks),
+        display,
+        idGenerator)
+        .execute();
     }
   }
 
@@ -156,6 +147,35 @@ public class TasklistCommandExecutor
   {
     display.printf("I don't know what the command \"%s\" is.", command);
     display.println();
+  }
+
+  public class AddTaskCommand
+  {
+    private String project;
+    private String description;
+    private final InMemoryStorage storage;
+    private final Display display;
+    private final Id idGenerator;
+
+    public AddTaskCommand(String project, String description, InMemoryStorage storage,
+      Display display, Id idGenerator)
+    {
+      this.project = project;
+      this.description = description;
+      this.storage = storage;
+      this.display = display;
+      this.idGenerator = idGenerator;
+    }
+
+    public void execute()
+    {
+      storage
+        .getProject(project)
+        .ifPresentOrElse(
+          tasks -> tasks.addTask(new Task(idGenerator.generate(), description, false)),
+          () -> display.printf("Could not find a project with the name \"%s\".\n", project)
+        );
+    }
   }
 
 }
