@@ -115,7 +115,7 @@ public class TasklistCommandExecutor
       new AddTaskCommand(
         projectTask[0],
         projectTask[1],
-        new InMemoryStorage(tasks),
+        new InMemoryStorage(tasks,idGenerator),
         display,
         idGenerator)
         .execute();
@@ -169,12 +169,16 @@ public class TasklistCommandExecutor
 
     public void execute()
     {
+
       storage
-        .getProject(project)
-        .ifPresentOrElse(
-          tasks -> tasks.addTask(new Task(idGenerator.generate(), description, false)),
-          () -> display.printf("Could not find a project with the name \"%s\".\n", project)
-        );
+        .saveTaskTo(project, description)
+        .mapLeft(
+          e -> {
+          display.printf("Could not find a project with the name \"%s\".\n", project);
+          return InMemoryStorage.Unit.instance();
+        });
+
+
     }
   }
 
