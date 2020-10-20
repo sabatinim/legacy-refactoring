@@ -1,8 +1,5 @@
 package com.lastminute.training.tasklist;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -18,13 +15,6 @@ public final class TaskList implements Runnable
   private final Display display;
 
   private long lastId = 0; //
-
-  public static void main(String[] args)
-  {
-    BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-    PrintWriter out = new PrintWriter(System.out);
-    new TaskList(new Display(out), new CommandInput(in)).run();
-  }
 
   public TaskList(Display display, CommandInput commandInput)
   {
