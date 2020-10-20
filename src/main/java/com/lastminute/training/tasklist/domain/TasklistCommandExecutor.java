@@ -1,4 +1,7 @@
-package com.lastminute.training.tasklist;
+package com.lastminute.training.tasklist.domain;
+
+import com.lastminute.training.tasklist.infrastructure.CommandInput;
+import com.lastminute.training.tasklist.infrastructure.Display;
 
 import java.util.ArrayList;
 import java.util.List;

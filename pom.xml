@@ -42,7 +42,7 @@
           <programs>
             <program>
               <id>task-list</id>
-              <mainClass>com.codurance.training.com.lastminute.training.tasklist.TaskList</mainClass>
+              <mainClass>com.codurance.training.com.lastminute.training.tasklist.infrastructure.TaskList</mainClass>
             </program>
           </programs>
         </configuration>

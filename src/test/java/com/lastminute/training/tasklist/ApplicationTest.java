@@ -4,6 +4,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.lastminute.training.tasklist.infrastructure.CommandInput;
+import com.lastminute.training.tasklist.infrastructure.Display;
+import com.lastminute.training.tasklist.infrastructure.TaskList;
+
 import java.io.*;
 
 import static java.lang.System.lineSeparator;

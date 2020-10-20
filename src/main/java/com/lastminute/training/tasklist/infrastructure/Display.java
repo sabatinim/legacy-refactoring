@@ -1,4 +1,4 @@
-package com.lastminute.training.tasklist;
+package com.lastminute.training.tasklist.infrastructure;
 
 import java.io.PrintWriter;
 

@@ -1,4 +1,7 @@
-package com.lastminute.training.tasklist;
+package com.lastminute.training.tasklist.infrastructure;
+
+import com.lastminute.training.tasklist.domain.Task;
+import com.lastminute.training.tasklist.domain.TasklistCommandExecutor;
 
 import java.util.LinkedHashMap;
 import java.util.List;

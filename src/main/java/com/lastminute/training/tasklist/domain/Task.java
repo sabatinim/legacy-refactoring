@@ -1,4 +1,4 @@
-package com.lastminute.training.tasklist;
+package com.lastminute.training.tasklist.domain;
 
 public final class Task {
     private final long id;
