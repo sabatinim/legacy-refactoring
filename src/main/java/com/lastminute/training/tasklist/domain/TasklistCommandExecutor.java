@@ -1,5 +1,7 @@
 package com.lastminute.training.tasklist.domain;
 
+import com.lastminute.training.tasklist.infrastructure.InMemoryStorage;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -68,14 +70,12 @@ public class TasklistCommandExecutor
 
   private void addTask(String project, String description)
   {
-    List<Task> projectTasks = tasks.get(project);
-    if (projectTasks == null)
-    {
-      display.printf("Could not find a project with the name \"%s\".", project);
-      display.println();
-      return;
-    }
-    projectTasks.add(new Task(nextId(), description, false));
+    new InMemoryStorage(tasks)
+      .getProject(project)
+      .ifPresentOrElse(
+        tasks -> tasks.addTask(new Task(nextId(), description, false)),
+        () -> display.printf("Could not find a project with the name \"%s\".\n", project)
+      );
   }
 
   private void setDone(String idString, boolean done)
@@ -119,6 +119,7 @@ public class TasklistCommandExecutor
   {
     String[] subcommandRest = commandLine.split(" ", 2);
     String subcommand = subcommandRest[0];
+
     if (subcommand.equals("project"))
     {
       addProject(subcommandRest[1]);
@@ -156,4 +157,5 @@ public class TasklistCommandExecutor
     display.printf("I don't know what the command \"%s\" is.", command);
     display.println();
   }
+
 }
