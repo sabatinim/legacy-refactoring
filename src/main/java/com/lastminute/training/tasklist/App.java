@@ -10,6 +10,6 @@ public class App
   {
     BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
     PrintWriter out = new PrintWriter(System.out);
-    new TaskList(new Display(out), new CommandInput(in)).run();
+    new TaskList(new CommandInput(in), new Display(out)).run();
   }
 }
