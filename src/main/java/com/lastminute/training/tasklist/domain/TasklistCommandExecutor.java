@@ -112,13 +112,11 @@ public class TasklistCommandExecutor
     else if (subcommand.equals("task"))
     {
       String[] projectTask = subcommandRest[1].split(" ", 2);
+
       new AddTaskCommand(
-        projectTask[0],
-        projectTask[1],
-        new InMemoryStorage(tasks,idGenerator),
-        display,
-        idGenerator)
-        .execute();
+        new InMemoryStorage(tasks, idGenerator),
+        display
+      ).execute(new AddTaskRequest(projectTask[0], projectTask[1]));
     }
   }
 
@@ -147,39 +145,6 @@ public class TasklistCommandExecutor
   {
     display.printf("I don't know what the command \"%s\" is.", command);
     display.println();
-  }
-
-  public class AddTaskCommand
-  {
-    private String project;
-    private String description;
-    private final InMemoryStorage storage;
-    private final Display display;
-    private final Id idGenerator;
-
-    public AddTaskCommand(String project, String description, InMemoryStorage storage,
-      Display display, Id idGenerator)
-    {
-      this.project = project;
-      this.description = description;
-      this.storage = storage;
-      this.display = display;
-      this.idGenerator = idGenerator;
-    }
-
-    public void execute()
-    {
-
-      storage
-        .saveTaskTo(project, description)
-        .mapLeft(
-          e -> {
-          display.printf("Could not find a project with the name \"%s\".\n", project);
-          return InMemoryStorage.Unit.instance();
-        });
-
-
-    }
   }
 
 }

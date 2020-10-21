@@ -28,9 +28,9 @@ public class TaskListExecutorTest
 
     Map<String, List<Task>> storage = new HashMap<>();
 
-    new TasklistCommandExecutor(commandInput,NOT_USED,storage).execute();
+    new TasklistCommandExecutor(commandInput, NOT_USED, storage).execute();
 
-    assertThat(storage.get("A_PROJECT_NAME"),is(Collections.EMPTY_LIST));
+    assertThat(storage.get("A_PROJECT_NAME"), is(Collections.EMPTY_LIST));
   }
 
   @Test
@@ -38,13 +38,14 @@ public class TaskListExecutorTest
   {
     CommandInput commandInput = () -> "add task A_PROJECT_NAME A_TASK_NAME";
 
-    Map<String, List<Task>> storage = new HashMap<String, List<Task>>(){{
-      put("A_PROJECT_NAME",new ArrayList<>());
+    Map<String, List<Task>> storage = new HashMap<>()
+    {{
+      put("A_PROJECT_NAME", new ArrayList<>());
     }};
 
-    new TasklistCommandExecutor(commandInput,NOT_USED,storage).execute();
+    new TasklistCommandExecutor(commandInput, NOT_USED, storage).execute();
 
-    assertThat(storage.get("A_PROJECT_NAME"),containsInAnyOrder(new Task(1,"A_TASK_NAME",false)));
+    assertThat(storage.get("A_PROJECT_NAME"), containsInAnyOrder(new Task(1, "A_TASK_NAME", false)));
   }
 
   @Test
@@ -52,15 +53,16 @@ public class TaskListExecutorTest
   {
     CommandInput commandInput = () -> "add task A_PROJECT_NAME A_TASK_NAME";
 
-    Map<String, List<Task>> storage = new HashMap<String, List<Task>>(){{
-      put("ANOTHER_PROJECT_NAME",new ArrayList<>());
+    Map<String, List<Task>> storage = new HashMap<>()
+    {{
+      put("ANOTHER_PROJECT_NAME", new ArrayList<>());
     }};
 
     final String[] expectedOutput = {""};
     Display display = display(expectedOutput);
     new TasklistCommandExecutor(commandInput, display, storage).execute();
 
-    assertThat(expectedOutput[0],is("Could not find a project with the name \"A_PROJECT_NAME\".\n"));
+    assertThat(expectedOutput[0], is("Could not find a project with the name \"A_PROJECT_NAME\".\n"));
   }
 
   private Display display(String[] expectedOutput)
@@ -70,7 +72,7 @@ public class TaskListExecutorTest
       @Override
       public void printf(String format, String value)
       {
-        expectedOutput[0] = format.replaceAll("%s",value);
+        expectedOutput[0] = format.replaceAll("%s", value);
       }
 
       @Override
@@ -88,7 +90,7 @@ public class TaskListExecutorTest
       @Override
       public void println(String value)
       {
-
+        expectedOutput[0] = value;
       }
 
       @Override

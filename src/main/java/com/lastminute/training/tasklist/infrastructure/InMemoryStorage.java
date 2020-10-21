@@ -2,13 +2,12 @@ package com.lastminute.training.tasklist.infrastructure;
 
 import io.vavr.control.Either;
 
+import com.lastminute.training.tasklist.domain.AddTaskRequest;
 import com.lastminute.training.tasklist.domain.Id;
 import com.lastminute.training.tasklist.domain.Task;
-import com.lastminute.training.tasklist.domain.Tasks;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 public class InMemoryStorage
 {
@@ -21,6 +20,8 @@ public class InMemoryStorage
     this.idGenerator = idGenerator;
   }
 
+
+
   public static class Unit{
     private Unit(){}
 
@@ -29,15 +30,27 @@ public class InMemoryStorage
     }
   }
 
+  class ProjectNotFound extends RuntimeException{
+    public ProjectNotFound(String message)
+    {
+      super(message);
+    }
+  }
+
   public Either<Exception,Unit> saveTaskTo(String projectName,String taskDescription)
   {
     List<Task> tasks = this.tasks.get(projectName);
     if (tasks == null)
     {
-      return Either.left(new RuntimeException());
+      return Either.left(new ProjectNotFound(String.format("Could not find a project with the name \"%s\".\n", projectName)));
     }
 
     tasks.add(new Task(idGenerator.generate(),taskDescription,false));
     return Either.right(Unit.instance());
+  }
+
+  public Either<Exception,Unit> saveTaskTo(AddTaskRequest request)
+  {
+    return saveTaskTo(request.projectName,request.taskDescription);
   }
 }
