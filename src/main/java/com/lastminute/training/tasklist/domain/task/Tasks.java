@@ -1,4 +1,4 @@
-package com.lastminute.training.tasklist.domain;
+package com.lastminute.training.tasklist.domain.task;
 
 import java.util.List;
 

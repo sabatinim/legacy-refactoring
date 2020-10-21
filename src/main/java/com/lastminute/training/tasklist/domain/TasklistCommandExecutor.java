@@ -1,8 +1,13 @@
 package com.lastminute.training.tasklist.domain;
 
-import com.lastminute.training.tasklist.infrastructure.InMemoryStorage;
+import com.lastminute.training.tasklist.domain.project.AddProjectCommand;
+import com.lastminute.training.tasklist.domain.task.AddTaskCommand;
+import com.lastminute.training.tasklist.domain.task.AddTaskRequest;
+import com.lastminute.training.tasklist.domain.task.Id;
+import com.lastminute.training.tasklist.domain.task.Task;
+import com.lastminute.training.tasklist.infrastructure.InMemoryProjectStorage;
+import com.lastminute.training.tasklist.infrastructure.task.InMemoryTaskStorage;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -63,11 +68,6 @@ public class TasklistCommandExecutor
     return false;
   }
 
-  private void addProject(String name)
-  {
-    tasks.put(name, new ArrayList<>());
-  }
-
   private void setDone(String idString, boolean done)
   {
     int id = Integer.parseInt(idString);
@@ -107,16 +107,20 @@ public class TasklistCommandExecutor
 
     if (subcommand.equals("project"))
     {
-      addProject(subcommandRest[1]);
+      String projectName = subcommandRest[1];
+
+      new AddProjectCommand(new InMemoryProjectStorage(tasks),projectName).execute();
+
     }
     else if (subcommand.equals("task"))
     {
       String[] projectTask = subcommandRest[1].split(" ", 2);
 
       new AddTaskCommand(
-        new InMemoryStorage(tasks, idGenerator),
-        display
-      ).execute(new AddTaskRequest(projectTask[0], projectTask[1]));
+        new InMemoryTaskStorage(tasks, idGenerator),
+        display,
+        new AddTaskRequest(projectTask[0], projectTask[1])
+      ).execute();
     }
   }
 

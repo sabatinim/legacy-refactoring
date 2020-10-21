@@ -1,20 +1,20 @@
-package com.lastminute.training.tasklist.infrastructure;
+package com.lastminute.training.tasklist.infrastructure.task;
 
 import io.vavr.control.Either;
 
-import com.lastminute.training.tasklist.domain.AddTaskRequest;
-import com.lastminute.training.tasklist.domain.Id;
-import com.lastminute.training.tasklist.domain.Task;
+import com.lastminute.training.tasklist.domain.task.AddTaskRequest;
+import com.lastminute.training.tasklist.domain.task.Id;
+import com.lastminute.training.tasklist.domain.task.Task;
 
 import java.util.List;
 import java.util.Map;
 
-public class InMemoryStorage
+public class InMemoryTaskStorage
 {
   private final Map<String, List<Task>> tasks;
   private final Id idGenerator;
 
-  public InMemoryStorage(Map<String, List<Task>> tasks, Id idGenerator)
+  public InMemoryTaskStorage(Map<String, List<Task>> tasks, Id idGenerator)
   {
     this.tasks = tasks;
     this.idGenerator = idGenerator;

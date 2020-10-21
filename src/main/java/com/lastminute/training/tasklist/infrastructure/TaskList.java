@@ -2,7 +2,7 @@ package com.lastminute.training.tasklist.infrastructure;
 
 import com.lastminute.training.tasklist.domain.CommandInput;
 import com.lastminute.training.tasklist.domain.Display;
-import com.lastminute.training.tasklist.domain.Task;
+import com.lastminute.training.tasklist.domain.task.Task;
 import com.lastminute.training.tasklist.domain.TasklistCommandExecutor;
 
 import java.util.LinkedHashMap;
