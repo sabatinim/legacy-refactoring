@@ -1,9 +1,10 @@
 package com.lastminute.training.tasklist.domain.task;
 
+import com.lastminute.training.tasklist.domain.Command;
 import com.lastminute.training.tasklist.domain.Display;
 import com.lastminute.training.tasklist.infrastructure.task.InMemoryTaskStorage;
 
-public class AddTaskCommand
+public class AddTaskCommand implements Command
 {
   private final InMemoryTaskStorage storage;
   private final Display display;
@@ -17,7 +18,8 @@ public class AddTaskCommand
     this.display = display;
     this.addTaskRequest = addTaskRequest;
   }
-
+  
+  @Override
   public void execute()
   {
     storage

@@ -50,7 +50,7 @@ public class TasklistCommandExecutor
         show();
         break;
       case "add":
-        add(commandRest[1]);
+        add(commandRest[1]).execute();
         break;
       case "check":
         check(commandRest[1]);
@@ -100,7 +100,7 @@ public class TasklistCommandExecutor
     }
   }
 
-  private void add(String commandLine)
+  private Command add(String commandLine)
   {
     String[] subcommandRest = commandLine.split(" ", 2);
     String subcommand = subcommandRest[0];
@@ -109,19 +109,20 @@ public class TasklistCommandExecutor
     {
       String projectName = subcommandRest[1];
 
-      new AddProjectCommand(new InMemoryProjectStorage(tasks),projectName).execute();
+      return new AddProjectCommand(new InMemoryProjectStorage(tasks),projectName);
 
     }
     else if (subcommand.equals("task"))
     {
       String[] projectTask = subcommandRest[1].split(" ", 2);
 
-      new AddTaskCommand(
+      return new AddTaskCommand(
         new InMemoryTaskStorage(tasks, idGenerator),
         display,
         new AddTaskRequest(projectTask[0], projectTask[1])
-      ).execute();
+      );
     }
+    return null;
   }
 
   private void check(String idString)

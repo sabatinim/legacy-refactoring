@@ -1,8 +1,9 @@
 package com.lastminute.training.tasklist.domain.project;
 
+import com.lastminute.training.tasklist.domain.Command;
 import com.lastminute.training.tasklist.infrastructure.InMemoryProjectStorage;
 
-public class AddProjectCommand
+public class AddProjectCommand implements Command
 {
   private final InMemoryProjectStorage inMemoryProjectStorage;
   private final String projectName;
@@ -14,6 +15,7 @@ public class AddProjectCommand
     this.projectName = projectName;
   }
 
+  @Override
   public void execute()
   {
     inMemoryProjectStorage.create(projectName);
